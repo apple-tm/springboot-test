@@ -1,4 +1,7 @@
 # Compiled class file
+.git
+.idea
+springboot-test.iml
 *.class
 
 # Log file

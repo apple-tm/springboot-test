@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.atguigu</groupId>
+    <artifactId>boot-01-helloworld</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!--
+        子项目使用 parent 中的 properties 标签属性可以覆盖父项目默认的版本号及其它配置信息
+            举例：在下面写上<mysql.version>xxx</mysql.version>,那么 xxx 会覆盖父项目
+                mysql.version的值，当然覆盖范围仅限本项目，这个机制和 java 方法重写类似
+    -->
+    <properties>
+
+    </properties>
+
+    <!--
+        parent
+            1.父级项目中的pom.xml文件使用的packaging配置一定为pom
+            2.父级的pom文件只作项目的子模块的整合，在maven install时不会生成jar/war压缩包。
+            3.可以通过<modules>标签来整合子模块的编译顺序,Maven引入依赖使用最短路径原则
+            4.可以将一些子项目中共用的依赖或将其版本统一写到父级配置中，以便统一管理,减少子项目的pom配置。
+            5.Maven会沿着父子层次向上走，直到找到一个拥有dependencyManagement元素的项目，然后它就会使用
+                在这个dependencyManagement元素中指定的版本号。dependencyManagement元素。通过它
+                来管理jar包的版本，让子项目中引用一个依赖而不用显示的列出版本号。统一管理版本号。
+
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.4.RELEASE</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--
+            测试 springboot 自动配置按需加载，没有依赖 Batch 包时，BatchAutoConfiguration 不会生效
+            Failed to configure a DataSource: 'url' attribute is not specified and no embedded
+            datasource could be configured.(配置的批处理包没有配置数据库属性启动错误)
+         -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-batch</artifactId>-->
+        <!--</dependency>-->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                直接使用 maven 默认的插件打包异常：
+                    boot-01-helloworld-1.0-SNAPSHOT.jar中没有主清单属性
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
