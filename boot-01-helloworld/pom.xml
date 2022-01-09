@@ -18,10 +18,10 @@
     </properties>
 
     <!--
-        parent
-            1.父级项目中的pom.xml文件使用的packaging配置一定为pom
+        parent（pom 模板， 统一版本管理，避免 jar 之间的版本兼容问题）
+            1.父级项目中的pom.xml文件使用的packaging配置一定为pom，类似 pom 模板-
             2.父级的pom文件只作项目的子模块的整合，在maven install时不会生成jar/war压缩包。
-            3.可以通过<modules>标签来整合子模块的编译顺序,Maven引入依赖使用最短路径原则
+            3.可以通过<modules>标签来整合子模块的编译顺序,Maven引入依赖使用最短路径原则, 优先声明原则和覆盖原则
             4.可以将一些子项目中共用的依赖或将其版本统一写到父级配置中，以便统一管理,减少子项目的pom配置。
             5.Maven会沿着父子层次向上走，直到找到一个拥有dependencyManagement元素的项目，然后它就会使用
                 在这个dependencyManagement元素中指定的版本号。dependencyManagement元素。通过它
@@ -30,6 +30,7 @@
     -->
     <parent>
         <groupId>org.springframework.boot</groupId>
+        <!--父依赖为 spring-boot-dependencies, 包含了适配的多种常见框架-->
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.4.RELEASE</version>
     </parent>
@@ -38,6 +39,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <!--
+                spring-boot-starter-logging pom 文件可知：
+                    log4j 在 logback 依赖后面，默认使用 logback，但是打包时 log4j 依然会
+                    被打进取，所以最好移除
+                    -->
+                <exclusion>
+                    <artifactId>log4j-to-slf4j</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--
@@ -49,11 +61,48 @@
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-starter-batch</artifactId>-->
         <!--</dependency>-->
+
+        <!-- swagger2 -->
+        <!--<dependency>-->
+            <!--<groupId>io.springfox</groupId>-->
+            <!--<artifactId>springfox-swagger-ui</artifactId>-->
+            <!--<version>2.9.2</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>io.springfox</groupId>-->
+            <!--<artifactId>springfox-swagger2</artifactId>-->
+            <!--<version>2.9.2</version>-->
+        <!--</dependency>-->
+
+        <!-- swagger3 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!--
+            Automatic Restart so so
+            you could consider reloading technologies such as JRebel
+            JRebel：收费，热加载被修改的类而非devtools的 restart
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
             <!--
+                maven 打包插件
                 直接使用 maven 默认的插件打包异常：
                     boot-01-helloworld-1.0-SNAPSHOT.jar中没有主清单属性
             -->

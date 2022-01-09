@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="haha" class="com.atguigu.boot.bean.User">
+        <property name="name" value="zhansan"></property>
+        <property name="age" value="18"></property>
+    </bean>
+
+    <!--
+        Caused by: org.springframework.beans.NotWritablePropertyException:
+        Invalid property 'name' of bean class [com.atguigu.boot.bean.Pet]:
+        Bean property 'name' is not writable or has an invalid setter method.
+        Does the parameter type of the setter match the return type of the getter?
+
+        bean没有 getter setter 方法容器启动时会报错并且配置文件也会对属性报红提示
+    -->
+    <bean id="hehe" class="com.atguigu.boot.bean.Pet">
+        <property name="name" value="tom"></property>
+    </bean>
+</beans>
