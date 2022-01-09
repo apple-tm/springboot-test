@@ -30,8 +30,7 @@ import org.springframework.context.annotation.ImportResource;
 @ConditionalOnMissingBean(name = "tom")
 // 用于兼容老式 spring 项目，可以将 bean 配置文件中配置组件加载到容器中
 @ImportResource("classpath:beans.xml")
-// 开启配置注入并且把 Car 组件注册到容器中
-@EnableConfigurationProperties(Car.class)
+@EnableConfigurationProperties(value = Car.class)
 public class MyConfig {
 
     @Bean("tom01")
