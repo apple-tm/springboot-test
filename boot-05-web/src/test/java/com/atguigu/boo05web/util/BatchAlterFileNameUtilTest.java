@@ -13,8 +13,8 @@ class BatchAlterFileNameUtilTest {
     void getFileList() {
         BatchAlterFileNameUtil batchAlterFileNameUtil = new BatchAlterFileNameUtil();
         List<String> fileList = batchAlterFileNameUtil
-                .getFileList("/Users/apple/Documents/record/22", true, "ts", "mp4");
-        fileList.forEach(e -> System.out.println(e));
+                .getFileList("/Users/apple/Documents/record/新建文件夹1/24", true, "ts", "mp4");
+        fileList.forEach(e -> System.out.println("1"));
     }
 
 }
